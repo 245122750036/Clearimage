@@ -45,7 +45,7 @@ const enhanceImageFlow = ai.defineFlow(
       prompt: [
         {media: {url: input.lowResolutionImage}},
         {
-          text: 'Enhance this low resolution satellite image to high resolution 4k image, showing roads and buildings clearly. Add details and maximize the image quality.',
+          text: 'Enhance this low-resolution satellite image to a high-quality, clear, and sharp 4K image. Do not add any new features or objects to the image, only improve the existing details and clarity.',
         },
       ],
       config: {
