@@ -1,3 +1,9 @@
+import { ClaritySatClient } from "@/components/clarity-sat/clarity-sat-client";
+
 export default function Home() {
-  return <></>;
+  return (
+    <main>
+      <ClaritySatClient />
+    </main>
+  );
 }
