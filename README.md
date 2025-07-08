@@ -16,24 +16,24 @@ ClaritySat is a Next.js web application that uses Generative AI to enhance low-r
 - **UI:** ShadCN UI, Tailwind CSS, Lucide React Icons
 - **Deployment:** Firebase App Hosting
 
-## Prerequisites
+## Getting Started
 
-Before you begin, ensure you have the following installed and configured:
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
 
 - [Node.js](https://nodejs.org/) (v20 or later recommended)
-- [Firebase CLI](https://firebase.google.com/docs/cli#install_the_firebase_cli)
 - A Google Cloud account with a project created.
 - A GitHub account.
+- [Firebase CLI](https://firebase.google.com/docs/cli#install_the_firebase_cli) (only for Firebase deployment)
 
-## Step-by-Step Deployment Guide
+### Google Cloud Setup (for Genkit AI)
 
-Follow these steps to deploy the ClaritySat project from GitHub to Firebase App Hosting.
-
-### 1. Set Up Your Google Cloud Project
+Whether you run the project locally or deploy it, you need to set up Google Cloud for the AI features to work.
 
 1.  **Create a Google Cloud Project:** If you don't have one already, create a new project in the [Google Cloud Console](https://console.cloud.google.com/).
 2.  **Enable APIs:** In your Google Cloud project, enable the **Vertex AI API**. This is required for Genkit to function.
-3.  **Set Up Authentication:**
+3.  **Set Up Local Authentication:**
     *   Install the Google Cloud CLI ([gcloud CLI](https://cloud.google.com/sdk/docs/install)).
     *   Log in with your Google account:
         ```bash
@@ -43,14 +43,16 @@ Follow these steps to deploy the ClaritySat project from GitHub to Firebase App 
         ```bash
         gcloud config set project YOUR_PROJECT_ID
         ```
-    *   Generate application default credentials. This will allow Genkit to authenticate with Google Cloud services when running locally.
+    *   Generate application default credentials. This allows Genkit to authenticate with Google Cloud services when running locally.
         ```bash
         gcloud auth application-default login
         ```
 
-### 2. Clone and Configure the Project
+### Option 1: Running Locally (Without Firebase)
 
-1.  **Fork and Clone the Repository:**
+Follow these steps to run the project on your local machine for development and testing.
+
+1.  **Clone the Repository:**
     *   Fork this repository on GitHub.
     *   Clone your forked repository to your local machine:
         ```bash
@@ -64,25 +66,37 @@ Follow these steps to deploy the ClaritySat project from GitHub to Firebase App 
     ```
 
 3.  **Create Environment File:**
-    *   Create a `.env` file in the root of your project. This file is used for local development but is not required for deployment as App Hosting handles environment variables. For local development, it can remain empty if you've set up gcloud authentication.
+    *   Create a `.env` file in the root of your project. It can remain empty if you have completed the Google Cloud Setup above.
 
-### 3. Set Up Firebase
+4.  **Run the Application:**
+    *   **Run the Frontend (Next.js):** Open a terminal and run the following command to start the web application.
+        ```bash
+        npm run dev
+        ```
+        The application will be available at `http://localhost:9002`.
 
-1.  **Install Firebase CLI:** If you haven't already, install it globally:
-    ```bash
-    npm install -g firebase-tools
-    ```
+    *   **Run the AI Flows (Genkit):** For debugging the AI functionality, open a *second* terminal and run:
+        ```bash
+        npm run genkit:dev
+        ```
+        This starts the Genkit developer UI at `http://localhost:4000`, where you can inspect and test your AI flows.
 
-2.  **Log in to Firebase:**
-    ```bash
-    firebase login
-    ```
+### Option 2: Deploying to Firebase App Hosting
 
-3.  **Create a Firebase Project:**
-    *   Go to the [Firebase Console](https://console.firebase.google.com/) and create a new project.
-    *   Link this Firebase project to your existing Google Cloud project from Step 1.
+Follow these steps to deploy the ClaritySat project from GitHub to Firebase App Hosting.
 
-4.  **Initialize App Hosting:**
+1.  **Set Up Firebase:**
+    *   If you haven't already, install the Firebase CLI:
+        ```bash
+        npm install -g firebase-tools
+        ```
+    *   Log in to Firebase:
+        ```bash
+        firebase login
+        ```
+    *   Go to the [Firebase Console](https://console.firebase.google.com/) and create a new Firebase project. Link it to your existing Google Cloud project.
+
+2.  **Initialize App Hosting:**
     *   In your project's root directory, run the initialization command:
         ```bash
         firebase init apphosting
@@ -91,47 +105,20 @@ Follow these steps to deploy the ClaritySat project from GitHub to Firebase App 
         *   Select the Firebase project you just created.
         *   Choose your desired region.
         *   When asked for the backend's public repository, provide the URL of your forked GitHub repository (e.g., `https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME`).
-    *   This will create `firebase.json` and `.firebaserc` files, which configure the deployment.
+    *   This will create `firebase.json` and `.firebaserc` files.
 
-### 4. Deploy to Firebase App Hosting
-
-1.  **Commit and Push Changes:**
-    *   Commit the `firebase.json` and `.firebaserc` files to your repository.
+3.  **Deploy:**
+    *   Commit and push the new Firebase config files to your repository.
         ```bash
         git add firebase.json .firebaserc
         git commit -m "feat: Add Firebase App Hosting config"
         git push origin main
         ```
-
-2.  **Deploy:**
     *   Start the deployment from the Firebase CLI:
         ```bash
         firebase apphosting:backends:deploy
         ```
-    *   Select the backend to deploy (there should only be one).
-    *   Firebase App Hosting will then pull the code from your GitHub repository, build the Next.js application, and deploy it.
+    *   Select the backend to deploy. Firebase App Hosting will then pull the code from GitHub, build it, and deploy it.
 
-3.  **Access Your App:**
+4.  **Access Your App:**
     *   Once the deployment is complete, the CLI will provide you with the URL to your live application.
-
-## Running Locally
-
-### Running the Frontend (Next.js)
-
-To run the user interface locally for development and testing:
-
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:9002`.
-
-### Running the AI Flows (Genkit)
-
-To test the Genkit AI flows, run the Genkit developer UI in a separate terminal:
-
-```bash
-npm run genkit:dev
-```
-
-This will start a local server, typically at `http://localhost:4000`, where you can inspect, run, and debug your AI flows.
